@@ -11,8 +11,7 @@
 		  , sourceUrl  = $container.data( "sourceUrl" );
 
 		$container.fullCalendar({
-			  themeSystem : "bootstrap4"
-			, events      : sourceUrl
+			  events      : sourceUrl
 			, eventRender : eventRenderer
 		});
 	} );
