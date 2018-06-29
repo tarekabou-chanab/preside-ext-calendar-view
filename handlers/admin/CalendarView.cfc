@@ -3,6 +3,8 @@ component extends="preside.system.base.AdminHandler" {
 	property name="adminCalendarViewService" inject="adminCalendarViewService";
 	property name="customizationService"     inject="dataManagerCustomizationService";
 	property name="dataManagerService"       inject="dataManagerService";
+	property name="presideObjectService"     inject="presideObjectService";
+	property name="rulesEngineFilterService" inject="rulesEngineFilterService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
 		var objectName = args.objectName ?: "";
@@ -42,6 +44,24 @@ component extends="preside.system.base.AdminHandler" {
 				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "" ) }
 			  }
 		} );
+
+		if ( Len( Trim( rc.savedFilters ?: "" ) ) ) {
+			var savedFilters = presideObjectService.selectData(
+				  objectName   = "rules_engine_condition"
+				, selectFields = [ "expressions" ]
+				, filter       = { id=ListToArray( rc.savedFilters ?: "" ) }
+			);
+
+			for( var filter in savedFilters ) {
+				try {
+					getRecordsArgs.extraFilters.append( rulesEngineFilterService.prepareFilter(
+						  objectName      = object
+						, expressionArray = DeSerializeJson( filter.expressions )
+					) );
+				} catch( any e ){}
+			}
+		}
+
 
 		customizationService.runCustomization(
 			  objectName = objectName
