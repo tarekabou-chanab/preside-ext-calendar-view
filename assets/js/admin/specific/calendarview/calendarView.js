@@ -8,11 +8,13 @@
 
 	$( '.calendar-view' ).each( function(){
 		var $container = $( this )
-		  , sourceUrl  = $container.data( "sourceUrl" );
+		  , sourceUrl  = $container.data( "sourceUrl" )
+		  , aspectRatio = $container.data( "aspectRatio" ) || 2;
 
 		$container.fullCalendar({
 			  events      : sourceUrl
 			, eventRender : eventRenderer
+			, aspectRatio : aspectRatio
 		});
 	} );
 } )( presideJQuery );
