@@ -2,20 +2,20 @@
     "name":"PresideCMS Extension: Calendar View",
     "type":"preside-extensions",
     "version":"VERSION_NUMBER",
-    "location":"s3://pixl8-packages:eu-west-2/calendar-view/DOWNLOAD_LOCATION",
-    "private":true,
+    "location":"https://s3.eu-west-2.amazonaws.com/pixl8-public-packages/calendar-view/DOWNLOAD_LOCATION",
+    "private":false,
     "author":"Pixl8 Interactive",
     "directory":"application/extensions",
     "repository":{
         "type":"git",
-        "URL":"https://gitlab.pixl8.london/pixl8/extensions/preside-ext-calendar-view"
+        "URL":"https://github.com/pixl8/preside-ext-calendar-view"
     },
     "slug":"preside-ext-calendar-view",
-    "projectURL":"https://gitlab.pixl8.london/pixl8/extensions/preside-ext-calendar-view",
+    "projectURL":"https://github.com/pixl8/preside-ext-calendar-view",
     "ignore":[
         ".git/*",
         ".gitignore",
-        ".gitlab-ci.yml",
+        ".travis.yml",
         ".twgit_features_subject"
     ]
 }
