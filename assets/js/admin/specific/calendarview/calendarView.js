@@ -7,9 +7,10 @@
 
 	$( '.calendar-view' ).each( function(){
 		var $calendarView = $( this )
-		  , sourceUrl     = $calendarView.data( "sourceUrl" )
-		  , aspectRatio   = $calendarView.data( "aspectRatio" ) || 2
-		  , $container    = $calendarView.closest( ".calendar-view-container" )
+		  , sourceUrl      = $calendarView.data( "sourceUrl" )
+		  , aspectRatio    = $calendarView.data( "aspectRatio" ) || 2
+		  , config         = cfrequest.calendarViewConfig        || {}
+		  , $container     = $calendarView.closest( ".calendar-view-container" )
 		  , $favouritesDiv = $container.find( ".calendar-view-favourites" )
 		  , fetchEvents, getAdditionalDataForAjaxFetch, getFavourites;
 
@@ -61,10 +62,10 @@
 			} );
 		}
 
-		$calendarView.fullCalendar({
-			  events      : fetchEvents
-			, eventRender : eventRenderer
-			, aspectRatio : aspectRatio
-		});
+		config.events      = fetchEvents;
+		config.eventRender = eventRenderer;
+		config.aspectRatio = aspectRatio;
+
+		$calendarView.fullCalendar(config);
 	} );
 } )( presideJQuery );
