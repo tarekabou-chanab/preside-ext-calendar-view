@@ -62,6 +62,24 @@ In addition, the extension also attempts to hook into core grid listing customiz
 * [getAdditionalQueryStringForBuildAjaxListingLink](https://docs.preside.org/devguides/datamanager/customization/getAdditionalQueryStringForBuildAjaxListingLink.html)
 * [postFetchRecordsForGridListing](https://docs.preside.org/devguides/datamanager/customization/postFetchRecordsForGridListing.html)
 
+All [Full Calendar](https://fullcalendar.io/) configuration options can be passed in as dynamic values to the calendar initialisation.
+e.g. adding the month, agendaWeek and agendaDay views on the left side.
+
+```cfc
+objectCalendarView(
+	  objectName = "myPresideObject"
+	, args       = {
+		config = {
+			header = {
+				  left   = "month,agendaWeek,agendaDay"
+				, center = "title"
+				, right  = "today prev,next"
+			}
+		}
+	}
+)
+```
+
 ## Calendar event fields
 
 When returning an array of structs for the calendar, all the fields that are implemented by FullCalendar are supported. See docs for full details: https://fullcalendar.io/docs/event-object.
