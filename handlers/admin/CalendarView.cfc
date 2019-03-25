@@ -10,7 +10,10 @@ component extends="preside.system.base.AdminHandler" {
 		var objectName = args.objectName ?: "";
 
 		event.include( "/js/admin/specific/calendarview/"  )
-		     .include( "/css/admin/specific/calendarview/" );
+		     .include( "/css/admin/specific/calendarview/" )
+		     .includeData({
+		     	calendarViewConfig = args.config ?: {}
+		     });
 
 		args.eventsSourceUrl = customizationService.runCustomization(
 			  objectName     = objectName
