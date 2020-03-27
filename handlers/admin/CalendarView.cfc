@@ -43,8 +43,8 @@ component extends="preside.system.base.AdminHandler" {
 		getRecordsArgs.extraFilters.append( {
 			  filter="#calendarViewConfig.startDateField# between :start_date and :end_date"
 			, filterParams = {
-				  start_date = { type="cf_sql_date", value=( rc.start ?: "" ) }
-				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "" ) }
+				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
+				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
 			  }
 		} );
 
