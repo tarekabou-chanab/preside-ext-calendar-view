@@ -9,7 +9,7 @@
 		var $calendarView = $( this )
 		  , sourceUrl      = $calendarView.data( "sourceUrl" )
 		  , aspectRatio    = $calendarView.data( "aspectRatio" ) || 2
-		  , config         = cfrequest.calendarViewConfig        || {}
+		  , config         = cfrequest.config        || {}
 		  , $container     = $calendarView.closest( ".calendar-view-container" )
 		  , $favouritesDiv = $container.find( ".calendar-view-favourites" )
 		  , fetchEvents, getAdditionalDataForAjaxFetch, getFavourites;

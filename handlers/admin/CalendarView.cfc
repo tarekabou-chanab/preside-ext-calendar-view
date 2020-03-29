@@ -7,13 +7,16 @@ component extends="preside.system.base.AdminHandler" {
 	property name="rulesEngineFilterService" inject="rulesEngineFilterService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
-		var objectName = args.objectName ?: "";
+		var objectName   = args.objectName   ?: "";
 
-		event.include( "/js/admin/specific/calendarview/"  )
-		     .include( "/css/admin/specific/calendarview/" )
-		     .includeData({
-		     	calendarViewConfig = args.config ?: {}
-		     });
+		if ( (args.calendarView ?: "") == "year" ){
+			event.include( "/js/admin/specific/yearcalendarview/" )
+				 .includeData( { config = args.yearConfig ?: {} } );
+		} else {
+			event.include( "/js/admin/specific/calendarview/"  )
+			     .include( "/css/admin/specific/calendarview/" )
+			     .includeData( { config = args.config ?: {} } );
+		}
 
 		args.eventsSourceUrl = customizationService.runCustomization(
 			  objectName     = objectName
@@ -65,7 +68,6 @@ component extends="preside.system.base.AdminHandler" {
 			}
 		}
 
-
 		customizationService.runCustomization(
 			  objectName = objectName
 			, action     = "preFetchRecordsForGridListing"
@@ -105,7 +107,6 @@ component extends="preside.system.base.AdminHandler" {
 					, end   : record[ calendarViewConfig.endDateField  ]
 				};
 
-
 				if ( hasRecordRenderCustomization ) {
 					customizationService.runCustomization(
 						  objectName = objectName
@@ -127,8 +128,8 @@ component extends="preside.system.base.AdminHandler" {
 
 	private string function buildAjaxCalendarViewLink( event, rc, prc, args={} ){
 		var objectName     = args.objectName ?: "";
-		var qs             = ListAppend( "object=#objectName#", args.queryString ?: "", "&" );
-		var extraQs        = "";
+		var qs             = ListAppend( "object=#objectName#", args.queryString ?: "", len( args.queryString ?: "" ) ? "&" : "" );
+		var extraQs        = "calendarView=" & (args.calendarview ?: "");
 
 		if ( customizationService.objectHasCustomization( objectName, "getAdditionalQueryStringForBuildAjaxCalendarViewLink" ) ) {
 			extraQs = customizationService.runCustomization(

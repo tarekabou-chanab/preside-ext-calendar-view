@@ -1,6 +1,6 @@
 # Preside calendar view extension
 
-The Calendar View extension allows developers to present date/time based preside object data in calendar view. The extension builds upon [Full Calendar](https://fullcalendar.io/), an open source JavaScript calendar tool, and provides Preside hooks to make it super convenient.
+The Calendar View extension allows developers to present date/time based preside object data in calendar view. The extension builds upon both [Full Calendar](https://fullcalendar.io/) and [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), both open source JavaScript calendar tools, and provides Preside hooks to make it super convenient. 
 
 ## Install
 
@@ -22,6 +22,7 @@ Current arguments are:
 
 * `eventAspectRatio`: controls the width to height ratio of a day block in the calendar. The default is 2.
 * `allowFilter`: whether or not to show the favourite filters bar above the calendar (rules engine filter favourites)
+* `calendarView`: which js calendar to show. Use `calendarView=year` to show the [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), or ommit/leave blank to use [Full Calendar](https://fullcalendar.io/) (default)
 
 ## Decorating your object
 
@@ -79,6 +80,20 @@ objectCalendarView(
 	}
 )
 ```
+Configuration for [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/) can be passed using `yearConfig`. 
+Currently only `monthCalendarUrl` is supported which can be used to provide a base url to link to [Full Calendar](https://fullcalendar.io/). For example, to link to a particular day you could use:
+```cfc
+objectCalendarView(
+	  objectName = "myPresideObject"
+	, args       = {
+		  calendarView = "year"
+		, yearConfig   = {
+			monthCalendarUrl = "www.yoursite.com/page-with-full-calendar/?defaultView=basicDay&defaultDate="
+		}
+	}
+)
+```
+The selected day will be appended to the url.
 
 ## Calendar event fields
 

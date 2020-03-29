@@ -1,11 +1,12 @@
 ( function( $ ){
 	$( ".calendar-view" ).each( function(){
-		var $calendarView = $( this )
-		  , sourceUrl     = $calendarView.data( "sourceUrl" )
-		  , aspectRatio   = $calendarView.data( "aspectRatio" ) || 2
-		  , $container    = $calendarView.closest( ".calendar-view-container" )
-		  , $favouritesDiv = $container.find( ".calendar-view-favourites" )
-		  , fetchEvents, getAdditionalDataForAjaxFetch, getFavourites;
+		var $calendarView    = $( this )
+		  , sourceUrl        = $calendarView.data( "sourceUrl" )
+		  , aspectRatio      = $calendarView.data( "aspectRatio" ) || 2
+		  , $container       = $calendarView.closest( ".calendar-view-container" )
+		  , $favouritesDiv   = $container.find( ".calendar-view-favourites" )
+		  , config           = cfrequest.config || {}
+		  , fetchEvents, getAdditionalDataForAjaxFetch, getFavourites
 
 		var language = typeof cfrequest.language !== "undefined" ? cfrequest.language : "en";
 
@@ -34,11 +35,13 @@
 				$(e.element).popover('hide');
 			}
 			, selectRange: function(e) {
-				var location = cfrequest.baseMonthCalendarUrl
-					+ e.startDate.getFullYear()
-					+ "-" + (parseInt(e.startDate.getMonth())+1)
-					+ "-" + e.startDate.getDate();
-				window.location.href = location;
+				if ( typeof config.monthCalendarUrl != "undefined" ){
+					var location = config.monthCalendarUrl
+						+ e.startDate.getFullYear()
+						+ "-" + (parseInt(e.startDate.getMonth())+1)
+						+ "-" + e.startDate.getDate();
+					window.location.href = location;
+				}
 			}
 			, language : language
 		} );
