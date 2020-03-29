@@ -23,7 +23,6 @@
 			</div>
 			<hr>
 		</cfif>
-
 		<div class="calendar-view" data-source-url="#sourceUrl#" data-aspect-ratio="#aspectRatio#"></div>
 	</div>
 </cfoutput>
