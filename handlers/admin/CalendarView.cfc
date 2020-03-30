@@ -7,13 +7,16 @@ component extends="preside.system.base.AdminHandler" {
 	property name="rulesEngineFilterService" inject="rulesEngineFilterService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
-		var objectName = args.objectName ?: "";
+		var objectName   = args.objectName   ?: "";
 
-		event.include( "/js/admin/specific/calendarview/"  )
-		     .include( "/css/admin/specific/calendarview/" )
-		     .includeData({
-		     	calendarViewConfig = args.config ?: {}
-		     });
+		if ( (args.calendarView ?: "") == "year" ){
+			event.include( "/js/admin/specific/yearcalendarview/" )
+				 .includeData( { config = args.yearConfig ?: {} } );
+		} else {
+			event.include( "/js/admin/specific/calendarview/"  )
+			     .include( "/css/admin/specific/calendarview/" )
+			     .includeData( { config = args.config ?: {} } );
+		}
 
 		args.eventsSourceUrl = customizationService.runCustomization(
 			  objectName     = objectName
@@ -43,8 +46,8 @@ component extends="preside.system.base.AdminHandler" {
 		getRecordsArgs.extraFilters.append( {
 			  filter="#calendarViewConfig.startDateField# between :start_date and :end_date"
 			, filterParams = {
-				  start_date = { type="cf_sql_date", value=( rc.start ?: "" ) }
-				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "" ) }
+				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
+				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
 			  }
 		} );
 
@@ -64,7 +67,6 @@ component extends="preside.system.base.AdminHandler" {
 				} catch( any e ){}
 			}
 		}
-
 
 		customizationService.runCustomization(
 			  objectName = objectName
@@ -105,7 +107,6 @@ component extends="preside.system.base.AdminHandler" {
 					, end   : record[ calendarViewConfig.endDateField  ]
 				};
 
-
 				if ( hasRecordRenderCustomization ) {
 					customizationService.runCustomization(
 						  objectName = objectName
@@ -127,8 +128,8 @@ component extends="preside.system.base.AdminHandler" {
 
 	private string function buildAjaxCalendarViewLink( event, rc, prc, args={} ){
 		var objectName     = args.objectName ?: "";
-		var qs             = ListAppend( "object=#objectName#", args.queryString ?: "", "&" );
-		var extraQs        = "";
+		var qs             = ListAppend( "object=#objectName#", args.queryString ?: "", len( args.queryString ?: "" ) ? "&" : "" );
+		var extraQs        = "calendarView=" & (args.calendarview ?: "");
 
 		if ( customizationService.objectHasCustomization( objectName, "getAdditionalQueryStringForBuildAjaxCalendarViewLink" ) ) {
 			extraQs = customizationService.runCustomization(
