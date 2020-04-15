@@ -39,7 +39,7 @@
 					var location = config.monthCalendarUrl
 						+ e.startDate.getFullYear()
 						+ "-" + (parseInt(e.startDate.getMonth())+1)
-						+ "-" + e.startDate.getDate();
+						+ "-1";
 					window.location.href = location;
 				}
 			}

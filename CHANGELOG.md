@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+* Fixes issue when events with start/end dates are not in view are not displayed 
+* Fixes issue issue with events not showing in Safari
+
 ## 1.1.0
 
 * Added a 'year view' mode
