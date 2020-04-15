@@ -44,7 +44,7 @@ component extends="preside.system.base.AdminHandler" {
 		};
 
 		getRecordsArgs.extraFilters.append( {
-			  filter="#calendarViewConfig.startDateField# between :start_date and :end_date"
+			  filter="(#calendarViewConfig.startDateField# between :start_date and :end_date) or (#calendarViewConfig.endDateField# between :start_date and :end_date) or ( #calendarViewConfig.startDateField# < :start_date and #calendarViewConfig.endDateField# > :end_date - interval 1 day )"
 			, filterParams = {
 				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
 				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
