@@ -49,22 +49,10 @@ component extends="preside.system.base.AdminHandler" {
 
 		var calendarViewConfig = adminCalendarViewService.getCalendarViewConfigForObject( objectName );
 
-		var getRecordsArgs = {
-			  objectName   = objectName
-			, startRow     = 1
-			, maxRows      = 0
-			, orderBy      = calendarViewConfig.startDateField
-			, gridFields   = calendarViewConfig.selectFields
-			, extraFilters = []
-		};
+		var getRecordsArgs              = _getRecordArgs( objectName, calendarViewConfig );
+			getRecordsArgs.selectFields = calendarViewConfig.selectFields;
 
-		getRecordsArgs.extraFilters.append( {
-			  filter="(#calendarViewConfig.startDateField# between :start_date and :end_date) or (#calendarViewConfig.endDateField# between :start_date and :end_date) or ( #calendarViewConfig.startDateField# < :start_date and #calendarViewConfig.endDateField# > :end_date - interval 1 day )"
-			, filterParams = {
-				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
-				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
-			  }
-		} );
+		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField, endDateField=calendarViewConfig.endDateField );
 
 		if ( Len( Trim( rc.savedFilters ?: "" ) ) ) {
 			var savedFilters = presideObjectService.selectData(
@@ -153,7 +141,7 @@ component extends="preside.system.base.AdminHandler" {
 
 		var calendarEvents = [];
 
-		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField );
+		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField, endDateField=calendarViewConfig.endDateField );
 
 		if ( Len( publicViewHandler ) ) {
 			if ( Len( Trim( rc.publicFilters ?: "" ) ) ) {
@@ -276,14 +264,13 @@ component extends="preside.system.base.AdminHandler" {
 		};
 	}
 
-	private void function _getExtraFilters( required array extraFilters, required string startDateField ) {
+	private void function _getExtraFilters( required array extraFilters, required string startDateField, string endDateField ) {
 		extraFilters.append( {
-			  filter="#startDateField# between :start_date and :end_date"
+			  filter="(#startDateField# between :start_date and :end_date) or (#endDateField# between :start_date and :end_date) or ( #startDateField# < :start_date and #endDateField# > :end_date - interval 1 day )"
 			, filterParams = {
 				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
 				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
 			  }
 		} );
 	}
-
 }
