@@ -49,10 +49,22 @@ component extends="preside.system.base.AdminHandler" {
 
 		var calendarViewConfig = adminCalendarViewService.getCalendarViewConfigForObject( objectName );
 
-		var getRecordsArgs        = _getRecordArgs( objectName, calendarViewConfig );
-		getRecordsArgs.gridFields = calendarViewConfig.selectFields;
+		var getRecordsArgs = {
+			  objectName   = objectName
+			, startRow     = 1
+			, maxRows      = 0
+			, orderBy      = calendarViewConfig.startDateField
+			, gridFields   = calendarViewConfig.selectFields
+			, extraFilters = []
+		};
 
-		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField );
+		getRecordsArgs.extraFilters.append( {
+			  filter="(#calendarViewConfig.startDateField# between :start_date and :end_date) or (#calendarViewConfig.endDateField# between :start_date and :end_date) or ( #calendarViewConfig.startDateField# < :start_date and #calendarViewConfig.endDateField# > :end_date - interval 1 day )"
+			, filterParams = {
+				  start_date = { type="cf_sql_date", value=( rc.start ?: "1900-01-01" ) }
+				, end_date   = { type="cf_sql_date", value=( rc.end   ?: "2900-01-01" ) }
+			  }
+		} );
 
 		if ( Len( Trim( rc.savedFilters ?: "" ) ) ) {
 			var savedFilters = presideObjectService.selectData(
