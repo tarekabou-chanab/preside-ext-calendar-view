@@ -11,7 +11,7 @@ component extends="preside.system.base.AdminHandler" {
 
 		if ( (args.calendarView ?: "") == "year" ){
 			event.include( "/js/admin/specific/yearcalendarview/" )
-				 .includeData( { config = args.yearConfig ?: {} } );
+				 .includeData( { config = args.yearConfig ?: {}, language=args.language ?: "en" } );
 		} else {
 			event.include( "/js/admin/specific/calendarview/"  )
 			     .include( "/css/admin/specific/calendarview/" )
