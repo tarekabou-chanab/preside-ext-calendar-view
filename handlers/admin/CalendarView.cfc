@@ -7,15 +7,19 @@ component extends="preside.system.base.AdminHandler" {
 	property name="rulesEngineFilterService" inject="rulesEngineFilterService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
-		var objectName   = args.objectName   ?: "";
+		var objectName = args.objectName ?: "";
 
 		if ( (args.calendarView ?: "") == "year" ){
 			event.include( "/js/admin/specific/yearcalendarview/" )
 				 .includeData( { config = args.yearConfig ?: {}, language=args.language ?: "en" } );
 		} else {
+			var config = args.config ?: {};
+			if ( len( args.language ?: "" ) ) {
+				config.locale = args.language;
+			}
 			event.include( "/js/admin/specific/calendarview/"  )
 			     .include( "/css/admin/specific/calendarview/" )
-			     .includeData( { config = args.config ?: {} } );
+			     .includeData( { config = config } );
 		}
 
 		args.eventsSourceUrl = customizationService.runCustomization(
