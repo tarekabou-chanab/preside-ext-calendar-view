@@ -8,11 +8,11 @@ component extends="preside.system.base.AdminHandler" {
 	property name="formsService"             inject="FormsService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
-		var objectName   = args.objectName   ?: "";
+		var objectName = args.objectName ?: "";
 
 		if ( (args.calendarView ?: "") == "year" ){
 			event.include( "/js/admin/specific/yearcalendarview/" )
-				 .includeData( { config = args.yearConfig ?: {} } );
+				 .includeData( { config = args.yearConfig ?: {}, language=args.language ?: "en" } );
 		} else {
 			if ( IsTrue( args.publicView ?: "" ) ) {
 				event.include( "/js/admin/specific/calendarviewPublic/" );
@@ -20,8 +20,12 @@ component extends="preside.system.base.AdminHandler" {
 				event.include( "/js/admin/specific/calendarview/"  );
 			}
 
+			var config = args.config ?: {};
+			if ( len( args.language ?: "" ) ) {
+				config.locale = args.language;
+			}
 			event.include( "/css/admin/specific/calendarview/" )
-			     .includeData( { config = args.config ?: {} } );
+			     .includeData( { config = config } );
 		}
 
 		args.eventsSourceUrl = customizationService.runCustomization(
