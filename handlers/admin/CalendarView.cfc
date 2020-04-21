@@ -49,8 +49,8 @@ component extends="preside.system.base.AdminHandler" {
 
 		var calendarViewConfig = adminCalendarViewService.getCalendarViewConfigForObject( objectName );
 
-		var getRecordsArgs              = _getRecordArgs( objectName, calendarViewConfig );
-			getRecordsArgs.selectFields = calendarViewConfig.selectFields;
+		var getRecordsArgs            = _getRecordArgs( objectName, calendarViewConfig );
+			getRecordsArgs.gridFields = calendarViewConfig.selectFields;
 
 		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField, endDateField=calendarViewConfig.endDateField );
 
