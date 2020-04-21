@@ -1,6 +1,6 @@
 # Preside calendar view extension
 
-The Calendar View extension allows developers to present date/time based preside object data in calendar view. The extension builds upon both [Full Calendar](https://fullcalendar.io/) and [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), both open source JavaScript calendar tools, and provides Preside hooks to make it super convenient. 
+The Calendar View extension allows developers to present date/time based preside object data in calendar view. The extension builds upon both [Full Calendar](https://fullcalendar.io/) and [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), both open source JavaScript calendar tools, and provides Preside hooks to make it super convenient.
 
 ## Install
 
@@ -22,11 +22,15 @@ Current arguments are:
 
 * `eventAspectRatio`: controls the width to height ratio of a day block in the calendar. The default is 2.
 * `allowFilter`: whether or not to show the favourite filters bar above the calendar (rules engine filter favourites)
-* `calendarView`: which js calendar to show. Use `calendarView=year` to show the [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), or ommit/leave blank to use [Full Calendar](https://fullcalendar.io/) (default)
+* `calendarView`: which js calendar to show. Use `calendarView=year` to show the [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/), or ommit/leave blank to use [Full Calendar](https://fullcalendar.io/docs/v3) (default)
+* `publicView`: to render events for public audience, i.e. non-Admin users. This will hide admin favourite filter from being rendered, hence `allowFilter` is not needed (and will be ignored) when this is set
+* `publicFormFilter`: path to public form filter. This will render form filter above the calendar
 
 ## Decorating your object
 
 In order for the calendar view to know how to render your object data, you must decorate your object with some special attributes:
+
+### Admin view
 
 ```cfc
 /**
@@ -39,11 +43,33 @@ component {
 }
 ```
 
-* `calendarStartDateField`: (required) tells the extension what field to use for the 
+* `calendarStartDateField`: (required) tells the extension what field to use for the
 * `calendarEndDateField`: (required) tells the extension what field to use for the end date (can be the same as the start date)
 * `calendarSelectFields` (optional, default is just the label field) tells the extension what fields to select when fetching data. These fields can then be used in custom renders for a calendar event (see below).
 
+### Public view
+
+```cfc
+/**
+ * @calendarStartDateField start_date
+ * @calendarEndDateField   end_date
+ * @calendarPublicSelectFields    id,name,event_type.label as event_type,slug,group_concat( distinct region.id ) as region_ids
+ * @calendarPublicHandler         admin.appEventViewer
+ * @calendarLinkKey               appEventSlug:slug
+ */
+component {
+  // ...
+}
+```
+
+* `calendarStartDateField` & `calendarEndDateField`: (required) same usage as per Admin endpoint
+* `calendarPublicSelectFields`: (required) fields to select when fetching data. Define as how you would for selectFields. These fields can then be used in custom renders for a calendar event
+* `calendarPublicHandler`: (required) path to custom handler endpoint which contains rendering functions for public view.
+* `calendarLinkKey` (optional, needed to render public event link) this builds custom URL. The notion in the example will be used in `event.buildAdminLink( appEventSlug={recordid} )` with additional {recordid} replacement with record `slug` field in `processRecordsForCalendar()`
+
 ## Customizing
+
+### Admin view
 
 The Calendar View extension uses the [Data Manager customization system](https://docs.preside.org/devguides/datamanager/customization.html) to allow you to make per-object and global customisations of calendar views. Customizations are focused on how to fetch and _what_ data is fetched from the system to populate the calendar. Customizations are:
 
@@ -63,6 +89,14 @@ In addition, the extension also attempts to hook into core grid listing customiz
 * [getAdditionalQueryStringForBuildAjaxListingLink](https://docs.preside.org/devguides/datamanager/customization/getAdditionalQueryStringForBuildAjaxListingLink.html)
 * [postFetchRecordsForGridListing](https://docs.preside.org/devguides/datamanager/customization/postFetchRecordsForGridListing.html)
 
+### Public view
+
+Customisation of the following functions has to be in the handler as defined in the object's `@calendarPublicHandler`:
+
+* `getAdditionalFiltersForAjaxCalendarPublicView`: required function for  filtering records, if custom form filter is defined for `publicFormFilter`
+* `processRecordsForCalendar`: same usage as admin view
+* `addCalendarEventFields`: same usage as admin view
+
 All [Full Calendar](https://fullcalendar.io/) configuration options can be passed in as dynamic values to the calendar initialisation.
 e.g. adding the month, agendaWeek and agendaDay views on the left side.
 
@@ -80,7 +114,14 @@ objectCalendarView(
 	}
 )
 ```
-Configuration for [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/) can be passed using `yearConfig`. 
+## Public view - multiple sources
+
+Can be setup via interceptor with the function `preRenderCalendarViewlet( ... )` to define additional sources endpoint, and pass it via `includeData`, i.e.
+```cfc
+event.includeData( { additionalUrls = interceptData.additionalUrls } );
+```
+
+Configuration for [Bootstrap year Calendar](https://www.bootstrap-year-calendar.com/) can be passed using `yearConfig`.
 Currently only `monthCalendarUrl` is supported which can be used to provide a base url to link to [Full Calendar](https://fullcalendar.io/). For example, to link to a particular day you could use:
 ```cfc
 objectCalendarView(
@@ -101,6 +142,11 @@ When returning an array of structs for the calendar, all the fields that are imp
 
 In _addition_, the extension also allows you to set a `htmlTitle` field that allows you more flexibility for rendering the title of a calendar item (the default implementation of `title` escapes any html).
 
+## Calendar event colour codes
+
+You can setup colour codes for different event types using this component. To use this, enable feature `calendarManageColour`
+
+This comes with a helper function `getCalendarItemColoursByLabel()` which can be called in `processRecordsForCalendar()`
 
 # Contributing
 
