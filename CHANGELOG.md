@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+
+* Add localisation possibilities
+* Add german localisation
+
 ## 1.1.1
 
 * Fixes issue when events with start/end dates are not in view are not displayed 
