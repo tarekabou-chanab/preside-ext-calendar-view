@@ -78,6 +78,15 @@
 		config.aspectRatio = aspectRatio;
 		config.eventSources = [{ events:fetchEvents }];
 
+		if ( typeof config.views !== "undefined"
+			&& typeof config.views.month !== "undefined"
+			&& typeof config.views.month.columnHeaderFormat !== "undefined"
+			&& config.views.month.columnHeaderFormat == 'ddd' ) {
+			config.views.month.columnHeaderText = function(mom) {
+				return mom._locale.__proto__._weekdaysShort[mom.weekday()];
+			}
+		}
+
 		for ( var i in additionalUrls ) {
 			config.eventSources.push({ events: fetchAdditionalEvents(i) });
 		}
