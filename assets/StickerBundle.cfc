@@ -3,6 +3,7 @@ component {
 	public void function configure( bundle ) {
 		bundle.addAsset( id="momentjs"       ,     path="/js/lib/moment-2.22.2.min.js"               );
 		bundle.addAsset( id="fullcalendarjs" ,     path="/js/lib/fullcalendar-3.9.0.min.js"          );
+		bundle.addAsset( id="fullcalendarlocale",  path="/js/lib/fullcalendar-locale/locale-all.js"  );
 		bundle.addAsset( id="fullcalendarcss",     path="/css/lib/fullcalendar-3.9.0.min.css"        );
 		bundle.addAsset( id="yearcalendarjs" ,     path="/js/lib/js-year-calendar-1.0.0.min.js "     );
 		bundle.addAsset( id="yearcalendarlocale" , path="/js/lib/js-year-calendar-locale/locales.js" );
@@ -25,12 +26,16 @@ component {
 
 		bundle.asset( "fullcalendarjs" ).dependsOn( "momentjs" );
 		bundle.asset( "fullcalendarjs" ).dependsOn( "/js/admin/lib/jquery/" );
+		bundle.asset( "fullcalendarlocale" ).dependsOn( "fullcalendarjs" );
 		bundle.asset( "yearcalendarjs" ).dependsOn( "momentjs" );
 		bundle.asset( "yearcalendarjs" ).dependsOn( "/js/admin/lib/jquery/" );
 		bundle.asset( "yearcalendarlocale" ).dependsOn( "yearcalendarjs" );
 
 		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarjs" );
+		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarlocale" );
 		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarcss" );
+		bundle.asset( "/js/admin/specific/calendarviewPublic/" ).dependsOn( "fullcalendarjs" );
+		bundle.asset( "/js/admin/specific/calendarviewPublic/" ).dependsOn( "fullcalendarcss" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarjs" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarlocale" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarcss" );
