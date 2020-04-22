@@ -16,6 +16,10 @@ component extends="preside.system.base.AdminHandler" {
 		} else {
 			if ( IsTrue( args.publicView ?: "" ) ) {
 				event.include( "/js/admin/specific/calendarviewPublic/" );
+
+				if ( Len( args.publicFormFilter ?: "" ) && !formsService.formExists( formName=args.publicFormFilter ) ) {
+					args.publicFormFilter = "";
+				}
 			} else {
 				event.include( "/js/admin/specific/calendarview/"  );
 			}
@@ -30,12 +34,6 @@ component extends="preside.system.base.AdminHandler" {
 			, args           = args
 			, defaultHandler = "admin.calendarView.buildAjaxCalendarViewLink"
 		);
-
-		if ( IsTrue( args.publicView ?: "" ) ) {
-			if ( Len( args.publicFormFilter ?: "" ) && !formsService.formExists( formName=args.publicFormFilter ) ) {
-				args.publicFormFilter = "";
-			}
-		}
 
 		announceInterception( "preRenderCalendarViewlet", args );
 
