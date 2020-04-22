@@ -1,4 +1,5 @@
 <cfparam name="args.allowFilter" type="boolean" default="true" />
+<cfparam name="args.publicFormFilter" type="string" default="" />
 
 <cfscript>
 	args.filterContextData = args.filterContextData ?: {};
@@ -6,7 +7,7 @@
 	sourceUrl = args.eventsSourceUrl ?: "";
 	aspectRatio = Val( args.eventAspectRatio ?: 2 );
 
-	args.allowFilter = args.allowFilter && isFeatureEnabled( "rulesengine" );
+	args.allowFilter = args.allowFilter && isFeatureEnabled( "rulesengine" ) && !IsTrue( args.publicView ?: false );
 </cfscript>
 
 <cfoutput>
@@ -22,6 +23,10 @@
 				</div>
 			</div>
 			<hr>
+		<cfelseif IsTrue( args.publicView ?: "" ) and Len( args.publicFormFilter )>
+			<div class="calendar-public-view-filter">
+				#renderForm( formName=args.publicFormFilter )#
+			</div>
 		</cfif>
 		<div class="calendar-view" data-source-url="#sourceUrl#" data-aspect-ratio="#aspectRatio#"></div>
 	</div>
