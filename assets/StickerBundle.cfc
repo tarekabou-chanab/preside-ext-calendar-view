@@ -34,6 +34,8 @@ component {
 		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarjs" );
 		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarlocale" );
 		bundle.asset( "/js/admin/specific/calendarview/" ).dependsOn( "fullcalendarcss" );
+		bundle.asset( "/js/admin/specific/calendarviewPublic/" ).dependsOn( "fullcalendarjs" );
+		bundle.asset( "/js/admin/specific/calendarviewPublic/" ).dependsOn( "fullcalendarcss" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarjs" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarlocale" );
 		bundle.asset( "/js/admin/specific/yearcalendarview/" ).dependsOn( "yearcalendarcss" );
