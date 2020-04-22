@@ -13,3 +13,12 @@
 			);
 		</cfscript>
 </cffunction>
+
+<cffunction name="getCalendarItemColoursByLabel" access="public" returntype="any">
+	<cfargument name="label" type="string" required="true" />
+	<cfscript>
+		return !Len( label ) ? getController().getWireBox().getInstance( "adminCalendarViewService" ).getDefaultColourCodes() : getController().getWireBox().getInstance( "adminCalendarViewService" ).getColourCodesByLabel(
+			labelName = label
+		);
+	</cfscript>
+</cffunction>

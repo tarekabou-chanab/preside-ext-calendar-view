@@ -4,7 +4,10 @@
 /tests/testresults.xml
 /assets/node_modules
 /assets/css/**/*.less.css
+/assets/css/**/*.min.css
+/assets/js/**/*.min.js
 /assets/js/**/*.min.map
 /build
 npm-debug.log
 /tests/server*.json
+.DS_Store
