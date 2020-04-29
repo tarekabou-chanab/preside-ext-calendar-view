@@ -25,7 +25,10 @@
 			<hr>
 		<cfelseif IsTrue( args.publicView ?: "" ) and Len( args.publicFormFilter )>
 			<div class="calendar-public-view-filter">
-				#renderForm( formName=args.publicFormFilter )#
+				<span class="calendar-public-view-filter-label">#translateResource( uri="calendarView:public.filter.label" )#</span>
+				<div class="calendar-public-view-filter-wrap">
+					#renderForm( formName=args.publicFormFilter )#
+				</div>
 			</div>
 		</cfif>
 		<div class="calendar-view" data-source-url="#sourceUrl#" data-aspect-ratio="#aspectRatio#"></div>

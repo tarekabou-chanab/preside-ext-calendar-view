@@ -1,7 +1,11 @@
 # Changelog
 
+## 1.1.4
+ * Markup update for public view filter
+ * Assign colour code to cache only when there's record
+
 ## 1.1.3
-* multiple sources input
+* multiple input sources
 * calendar code object: to manage colours for different types
 * helper function to map event type with correct colour codes
 * Public view functionality added: renders calendar for public audience

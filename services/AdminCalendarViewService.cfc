@@ -45,13 +45,15 @@ component {
 				selectFields = [ "label","bgcolour","textcolour" ]
 			);
 
-			for( var record in colourCodesLookup ) {
-				colourCodes[ record.label ] = {
-					  bgColour   = record.bgcolour
-					, textcolour = record.textcolour
-				};
+			if ( colourCodesLookup.recordCount ) {
+				for( var record in colourCodesLookup ) {
+					colourCodes[ record.label ] = {
+						  bgColour   = record.bgcolour
+						, textcolour = record.textcolour
+					};
+				}
+				cache.set( cacheKey, colourCodes );
 			}
-			cache.set( cacheKey, colourCodes );
 		}
 
 		return colourCodes[ labelName ] ?: getDefaultColourCodes();
