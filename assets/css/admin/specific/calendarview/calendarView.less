@@ -22,4 +22,52 @@
 			}
 		}
 	}
+
+	.calendar-public-view-filter {
+		display : -webkit-box;
+		display : -moz-box;
+		display : -ms-flexbox;
+		display : -webkit-flex;
+		display : flex;
+		align-items: center;
+		justify-content: flex-start;
+		margin-bottom: 20px;
+
+		&-label {
+			margin-right: 20px;
+		}
+		&-wrap {
+			fieldset {
+				display: block;
+			}
+
+			.form-group {
+				margin-bottom: 0;
+				width: auto;
+				display: inline-block;
+
+				> label {
+					display: none;
+				}
+				> .col-sm-9 {
+					float: none;
+					width: 100%;
+				}
+			}
+
+			select.form-control {
+				width: 140px;
+			}
+
+			.chosen-container {
+				width: 140px !important;
+				transition: width 0.2s ease-in;
+
+				&.chosen-with-drop {
+					z-index: 9;
+					width: 280px !important;
+				}
+			}
+		}
+	}
 }
