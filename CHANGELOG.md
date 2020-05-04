@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.5
+ * changed year view mouseover rendering
+ * check calendarManageColour feature is enabled when getting item colour
+
 ## 1.1.4
  * Markup update for public view filter
  * Assign colour code to cache only when there's record

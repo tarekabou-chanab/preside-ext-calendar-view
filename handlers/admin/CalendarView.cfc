@@ -45,16 +45,17 @@ component extends="preside.system.base.AdminHandler" {
 	}
 
 	public void function ajaxEventsForCalendarView( event, rc, prc ) {
-		event.initializeDatamanagerPage( objectName=rc.object ?: "" );
-
-		var objectName = prc.objectName ?: "";
-
+		var objectName         = rc.object ?: prc.objectName ?: "";
 		var calendarViewConfig = adminCalendarViewService.getCalendarViewConfigForObject( objectName );
+		var getRecordsArgs     = _getRecordArgs( objectName, calendarViewConfig );
 
-		var getRecordsArgs            = _getRecordArgs( objectName, calendarViewConfig );
-			getRecordsArgs.gridFields = calendarViewConfig.selectFields;
+		getRecordsArgs.gridFields = calendarViewConfig.selectFields;
 
-		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField, endDateField=calendarViewConfig.endDateField );
+		_getExtraFilters(
+			  extraFilters   = getRecordsArgs.extraFilters
+			, startDateField = calendarViewConfig.startDateField
+			, endDateField   = calendarViewConfig.endDateField
+		);
 
 		if ( Len( Trim( rc.savedFilters ?: "" ) ) ) {
 			var savedFilters = presideObjectService.selectData(
@@ -256,7 +257,6 @@ component extends="preside.system.base.AdminHandler" {
 	}
 
 	private struct function _getRecordArgs( required string objectName, required struct calendarViewConfig ) {
-
 		return {
 			  objectName       = objectName
 			, startRow         = 1

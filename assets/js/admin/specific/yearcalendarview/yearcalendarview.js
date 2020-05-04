@@ -47,8 +47,8 @@
 		} );
 
 		getMouseOverContent = function( events ){
-			if ( events.length && typeof events[0].htmlTitle !== "undefined" && events[0].htmlTitle.length ) {
-				return events[0].htmlTitle;
+			if ( events.length && typeof events[0].htmlTitle !== "undefined" ) {
+				return events.map( function( el ){ return el.htmlTitle; } ).join( "" );
 			} else {
 				return "";
 			}
