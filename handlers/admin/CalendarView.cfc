@@ -8,11 +8,11 @@ component extends="preside.system.base.AdminHandler" {
 	property name="formsService"             inject="FormsService";
 
 	private string function calendarViewlet( event, rc, prc, args={} ) {
-		var objectName   = args.objectName   ?: "";
+		var objectName = args.objectName ?: "";
 
 		if ( (args.calendarView ?: "") == "year" ){
 			event.include( "/js/admin/specific/yearcalendarview/" )
-				 .includeData( { config = args.yearConfig ?: {} } );
+				 .includeData( { config = args.yearConfig ?: {}, language=args.language ?: "en" } );
 		} else {
 			if ( IsTrue( args.publicView ?: "" ) ) {
 				event.include( "/js/admin/specific/calendarviewPublic/" );
@@ -24,8 +24,12 @@ component extends="preside.system.base.AdminHandler" {
 				event.include( "/js/admin/specific/calendarview/"  );
 			}
 
+			var config = args.config ?: {};
+			if ( len( args.language ?: "" ) ) {
+				config.locale = args.language;
+			}
 			event.include( "/css/admin/specific/calendarview/" )
-			     .includeData( { config = args.config ?: {} } );
+			     .includeData( { config = config } );
 		}
 
 		args.eventsSourceUrl = customizationService.runCustomization(
@@ -41,16 +45,17 @@ component extends="preside.system.base.AdminHandler" {
 	}
 
 	public void function ajaxEventsForCalendarView( event, rc, prc ) {
-		event.initializeDatamanagerPage( objectName=rc.object ?: "" );
-
-		var objectName = prc.objectName ?: "";
-
+		var objectName         = rc.object ?: prc.objectName ?: "";
 		var calendarViewConfig = adminCalendarViewService.getCalendarViewConfigForObject( objectName );
+		var getRecordsArgs     = _getRecordArgs( objectName, calendarViewConfig );
 
-		var getRecordsArgs            = _getRecordArgs( objectName, calendarViewConfig );
-			getRecordsArgs.gridFields = calendarViewConfig.selectFields;
+		getRecordsArgs.gridFields = calendarViewConfig.selectFields;
 
-		_getExtraFilters( extraFilters = getRecordsArgs.extraFilters, startDateField=calendarViewConfig.startDateField, endDateField=calendarViewConfig.endDateField );
+		_getExtraFilters(
+			  extraFilters   = getRecordsArgs.extraFilters
+			, startDateField = calendarViewConfig.startDateField
+			, endDateField   = calendarViewConfig.endDateField
+		);
 
 		if ( Len( Trim( rc.savedFilters ?: "" ) ) ) {
 			var savedFilters = presideObjectService.selectData(
@@ -252,7 +257,6 @@ component extends="preside.system.base.AdminHandler" {
 	}
 
 	private struct function _getRecordArgs( required string objectName, required struct calendarViewConfig ) {
-
 		return {
 			  objectName       = objectName
 			, startRow         = 1
